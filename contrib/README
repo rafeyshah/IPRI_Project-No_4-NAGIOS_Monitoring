@@ -1,0 +1,64 @@
+#####################
+Nagios Contrib README
+#####################
+
+This directory contains various programs, scripts, etc. that
+have been contribed by various people.  Read the source code
+if you want to find who did what.
+
+Here is a description of what you'll find...
+
+
+Conversion Programs:
+--------------------
+
+- convertcfg.c is a program to quickly convert old "host" config
+  files to the new template-based object config files.  It can also
+  convert extended host information definitions. Type 'make convertcfg'
+  to compile the utility.
+
+
+Additional CGIs:
+----------------
+
+- traceroute.cgi is (surprise) a CGI that allows you to do a traceroute
+  to a specific IP address.  Simply do a 'chmod +x' to make it executable
+  and place it in the CGI directory (i.e. /usr/local/nagios/sbin).
+  Requires Perl.
+
+- daemonchk.c is a CGI contributed by Karl DeBisschop that can test to
+  see whether or not the Nagios process is running.
+
+
+Miscellaneous Goodies:
+----------------------
+
+- htaccess.sample is a *sample* .htaccess file that can be used with
+  Apache to require password authentication for access to the web
+  interface.
+
+- epel-nagios.spec and epel-patches directory are added for creating EPEL like rpms
+
+  1. Prepare your rpmbuild environment for CentOS/RHEL
+
+  sudo yum instatll -y rpmdevtools gcc libtool rpmbuild
+
+  sudo yum instatll -y policycoreutils-devel selinux-policy-devel \
+  perl-generators gdbm-devel pyparsing systemtap perl-ExtUtils-Manifest \
+  libdb perl-ExtUtils-MakeMaker  perl-ExtUtils-Install perl-devel  \
+  perl-ExtUtils-ParseXS perl-local-lib  perl-CPAN perl-ExtUtils-AutoInstall \
+  perl-Test-Simple perl-ExtUtils-Embed  perl-HTML-Lint
+
+  2. Generate contrib/Makefile from contrib/Makefile.in
+
+     ../configure      # to generate contrib/Makefile
+     make rpm          # get nagioscore released tar ball
+     make localsrc-rpm # tar up existing src code to create rpm
+
+  3. To Upgrade for local EPEL RRPMs
+
+  sudo rpm -Uvh nagios-common-4.4.5-1.el7.x86_64.rpm \
+  nagios-contrib-4.4.5-1.el7.x86_64.rpm nagios-devel-4.4.5-1.el7.x86_64.rpm  nagios-4.4.5-1.el7.x86_64.rpm
+  sudo systemctl daemon-reload
+  sudo systemctl restart nagios
+
